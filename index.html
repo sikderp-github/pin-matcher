@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pin Generator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="bootstrap-4.5.0-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="pin-generator half-width">
+                    <input id="pinDisplay" class="form-control" type="text">
+                    <button id="pinGeneration" class="generate-btn">Generate Pin</button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div id="inputDis" class="input-section half-width" name='inputScreen'>
+                    <input id="numScreen" class="form-control" type="text" name="screen" value="0"> 
+                    <div class="numbers">
+                        <div class="calc-body">
+                            <div class="calc-button-row">
+                              <div class="button" value ='7' onclick = "buttonClick('7')">7</div>
+                              <div class="button" onclick="buttonClick('8')">8</div>
+                              <div class="button" onclick = "buttonClick('9')">9</div>
+                            </div>
+                            <div class="calc-button-row">
+                              <div class="button" onclick = "buttonClick('4')">4</div>
+                              <div class="button" onclick = "buttonClick('5')">5</div>
+                              <div class="button" onclick = "buttonClick('6')">6</div>
+                            </div>
+                            <div class="calc-button-row">
+                              <div class="button" onclick = "buttonClick('1')">1</div>
+                              <div class="button" onclick = "buttonClick('2')">2</div>
+                              <div class="button" onclick = "buttonClick('3')">3</div>
+                            </div>
+                            <div class="calc-button-row">
+                                <div class="button" onclick="backSpace('<')"><</div>
+                                <div class="button" onclick = "buttonClick('0')">0</div>
+                                <div class="button" onclick="clearTo()">C</div>
+                            </div>
+                            <div>
+                                <button id="submitBtn" type="submit" class="submit-btn">Submit</button>
+                                <p class="action-left">3 try left</p>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="notify-section">
+            <p id="notifyMismatch" class="notify">❌ Pin Didn't Match, Please try again</p>
+            <p id="notifyMatch" class="notify">✅ Pin Matched... Secret door is opening for you</p>
+        </div>
+    </div>
+    <script>
+        // pin generation
+            document.getElementById('pinGeneration').addEventListener('click', function(){
+            function getRandom(min, max){
+                return Math.random()* (max-min)+ min;
+            }
+            document.getElementById('pinDisplay').value = Math.round(getRandom(1000, 9999));
+          })
+
+  
+        // num pad
+
+            document.getElementById('numScreen').value = '';
+            function buttonClick(num){
+                let screen = document.getElementById('numScreen');
+                screen.value += num;
+                if(num == ''){
+                    screen.value = num;
+                }
+            }
+
+            // backspace
+            function backSpace(){
+            let display = document.getElementById('numScreen').value;
+            let backSpace =display.slice(0, display.length-1);
+            document.getElementById('numScreen').value = backSpace;
+            } 
+
+            //Clear to
+
+            function clearTo(){
+                let numdisplay = document.getElementById('numScreen');
+                numdisplay.value = " ";
+            }
+
+         // submit button
+            document.getElementById('notifyMatch').style.display = 'none';
+            document.getElementById('notifyMismatch').style.display = 'none';
+            
+         document.getElementById('submitBtn').addEventListener('click', function(){
+            let pinNumber = document.getElementById('pinDisplay').value;
+            let pinParse = parseInt(pinNumber);
+            
+            let numScreen = document.getElementById('numScreen').value;
+            let numParse = parseInt(numScreen);
+                        
+            if( pinParse == numParse ){
+                let notifyDispaly = document.getElementById('notifyMatch');
+                notifyDispaly.style.display = 'block';}
+
+                else if( pinParse != numParse ){
+                let notifyDispaly = document.getElementById('notifyMismatch');
+                notifyDispaly.style.display = 'block';   
+             }
+        })
+    </script>
+</body>
+</html>
